@@ -17,13 +17,11 @@ It produces two outputs:
 
 Boolean Expressions:
 
-\[
-Sum = A \oplus B
-\]
+---
 
-\[
-Carry = A \cdot B
-\]
+**Sum = A ⊕ B**
+
+**Carry = A · B**
 
 ---
 
