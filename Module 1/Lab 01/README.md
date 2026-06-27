@@ -2,28 +2,26 @@
 
 ## Aim
 
-To design, simulate, and verify a 2-input AND gate using Verilog HDL with Verilator and visualize the waveform using GTKWave.
+To design, simulate, and verify a 2-input AND gate using Verilog HDL using Verilator and analyze the waveform using GTKWave.
 
 ---
 
 # Theory
 
-An AND gate is a basic combinational logic gate that performs the logical AND operation.
+An AND gate is a fundamental combinational logic gate that performs the logical AND operation. The output is HIGH (1) only when both input signals are HIGH (1). If any one of the inputs is LOW (0), the output remains LOW (0).
 
-The output becomes HIGH (1) only when all inputs are HIGH (1). Otherwise, the output remains LOW (0).
+### Boolean Expression
 
-Boolean Expression:
-
-\[
-Y = A \& B
-\]
+```
+Y = A & B
+```
 
 ---
 
 # Block Diagram
 
 <p align="center">
-<img src="Images/block_diagram.png" width="300">
+<img src="Images/block_diagram.png" width="350">
 </p>
 
 ---
@@ -38,7 +36,7 @@ Y = A \& B
 
 # Project Structure
 
-```
+```text
 Lab 01
 │
 ├── Images
@@ -61,9 +59,9 @@ Lab 01
 
 ---
 
-# RTL Design
+# RTL Design File
 
-The Verilog design file is available in:
+The Verilog HDL design is available in:
 
 ```
 Source_Code/and_gate_design.v
@@ -73,18 +71,18 @@ The module implements a 2-input AND gate using a continuous assignment statement
 
 ---
 
-# Testbench
+# Testbench File
 
-The testbench is available in:
+The corresponding testbench is available in:
 
 ```
 Testbench/and_gate_tb.v
 ```
 
-The testbench verifies all possible input combinations:
+The testbench verifies all possible input combinations of the AND gate.
 
-| A | B | Output |
-|:-:|:-:|:------:|
+| A | B | Y |
+|:-:|:-:|:-:|
 |0|0|0|
 |0|1|0|
 |1|0|0|
@@ -92,18 +90,18 @@ The testbench verifies all possible input combinations:
 
 ---
 
-# Simulation
+# Simulation Procedure
 
-The project was simulated using **Verilator**.
-
-Compilation command:
+## Compilation
 
 ```bash
 verilator --binary -j 0 -Wall and_gate_design.v and_gate_tb.v \
 --top and_gate_tb --timing --CFLAGS "-std=c++20" --trace
 ```
 
-Run the simulation:
+---
+
+## Execution
 
 ```bash
 ./obj_dir/Vand_gate_tb
@@ -111,50 +109,66 @@ Run the simulation:
 
 ---
 
+## Waveform Generation
+
+Open the generated waveform using GTKWave.
+
+```bash
+gtkwave Waveforms/and_gate_dump.vcd
+```
+
+> If the VCD file is located inside `obj_dir`, use:
+
+```bash
+gtkwave obj_dir/and_gate_dump.vcd
+```
+
+---
+
 # Terminal Output
 
 <p align="center">
-<img src="Images/terminal_output.png" width="700">
+<img src="Images/terminal_output.png" width="750">
 </p>
 
-The simulation verifies all four input combinations. The output becomes HIGH only when both inputs are HIGH.
+The terminal output confirms the successful execution of the simulation and verifies all possible input combinations of the AND gate.
 
 ---
 
 # Waveform Output
 
 <p align="center">
-<img src="Images/waveform.png" width="700">
+<img src="Images/waveform.png" width="750">
 </p>
 
-The GTKWave timing diagram confirms the correct functionality of the AND gate. The output changes according to the logical AND operation for every input transition.
+The waveform generated using GTKWave verifies the correct logical behavior of the AND gate. The output becomes HIGH only when both inputs are HIGH.
 
 ---
 
 # Generated Waveform File
 
-The waveform generated during simulation is available in:
+The generated VCD waveform file is available in:
 
 ```
 Waveforms/and_gate_dump.vcd
 ```
 
-This VCD file can be opened using GTKWave for waveform analysis.
+This waveform file can be opened using GTKWave for timing analysis.
 
 ---
 
 # Applications
 
 - Digital Logic Design
-- Arithmetic Logic Units (ALU)
-- Control Circuits
-- Multiplexers
-- Decoders
+- Arithmetic Logic Units (ALUs)
+- Control Logic
+- Combinational Logic Circuits
+- FPGA Design
+- ASIC Design
 - Embedded Systems
-- FPGA and ASIC Design
 
 ---
 
 # Result
 
-The 2-input AND gate was successfully designed in Verilog HDL, simulated using Verilator, and verified using GTKWave. The observed simulation results matched the expected truth table, confirming the correct functionality of the design.
+The 2-input AND gate was successfully designed using Verilog HDL, simulated using Verilator, and verified using GTKWave. The simulation results and waveform matched the expected truth table, confirming the correct functionality of the design.
