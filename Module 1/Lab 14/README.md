@@ -1,263 +1,174 @@
-# Lab 14 – Exploring Reset Types in Digital Design
+# Lab 14 – Exploring Reset Types: Foundation for RDC
 
-## Overview
+## Aim
 
-This lab demonstrates different reset mechanisms used in digital systems using Verilog HDL. Four commonly used reset techniques are implemented and simulated using Verilator, while GTKWave is used to verify their behavior through waveform analysis.
+To understand and implement different reset techniques used in digital systems using Verilog HDL. This experiment demonstrates the behavior of Asynchronous Reset, Synchronous Reset, Global Reset, and Domain-Specific Reset through simulation using Verilator and GTKWave.
 
-The reset types covered in this lab are:
+---
+
+# Theory
+
+Reset circuits are fundamental components in digital systems that initialize sequential logic into a known state during power-up, fault recovery, or system restart. Different reset methodologies are used depending on timing requirements, system architecture, and reliability considerations.
+
+This experiment explores four commonly used reset techniques:
 
 - Asynchronous Reset
 - Synchronous Reset
 - Global Reset
 - Domain-Specific Reset
 
+Understanding these reset strategies forms the foundation for **Reset Domain Crossing (RDC)** in modern FPGA and ASIC design.
+
 ---
 
-## Folder Structure
+# Folder Structure
 
-```
-Lab 14/
-│── Asynchronous_Reset/
-│   ├── Images/
-│   │   ├── block_diagram.png
-│   │   └── waveform.png
-│   ├── Scripts/
-│   │   └── run.sh
-│   ├── Source_Code/
-│   │   └── async_reset_ff.v
-│   ├── Testbench/
-│   │   └── async_reset_tb.v
-│   └── Waveforms/
-│       └── async_reset.vcd
+```text
+Lab 14
 │
-│── Synchronous_Reset/
-│   ├── Images/
-│   │   ├── block_diagram.png
-│   │   └── waveform.png
-│   ├── Scripts/
-│   │   └── run.sh
-│   ├── Source_Code/
-│   │   └── sync_reset_ff.v
-│   ├── Testbench/
-│   │   └── sync_reset_tb.v
-│   └── Waveforms/
-│       └── sync_reset.vcd
+├── Asynchronous_Reset
+│   ├── Images
+│   ├── Scripts
+│   ├── Source_Code
+│   ├── Testbench
+│   └── Waveforms
 │
-│── Global_Reset/
-│   ├── Images/
-│   │   ├── block_diagram.png
-│   │   └── waveform.png
-│   ├── Scripts/
-│   │   └── run.sh
-│   ├── Source_Code/
-│   │   └── global_reset.v
-│   ├── Testbench/
-│   │   └── global_reset_tb.v
-│   └── Waveforms/
-│       └── global_reset.vcd
+├── Synchronous_Reset
+│   ├── Images
+│   ├── Scripts
+│   ├── Source_Code
+│   ├── Testbench
+│   └── Waveforms
 │
-│── Domain_Specific_Reset/
-│   ├── Images/
-│   │   ├── block_diagram.png
-│   │   └── waveform.png
-│   ├── Scripts/
-│   │   └── run.sh
-│   ├── Source_Code/
-│   │   └── domain_reset.v
-│   ├── Testbench/
-│   │   └── domain_reset_tb.v
-│   └── Waveforms/
-│       └── domain_reset.vcd
+├── Global_Reset
+│   ├── Images
+│   ├── Scripts
+│   ├── Source_Code
+│   ├── Testbench
+│   └── Waveforms
+│
+├── Domain_Specific_Reset
+│   ├── Images
+│   ├── Scripts
+│   ├── Source_Code
+│   ├── Testbench
+│   └── Waveforms
 │
 └── README.md
 ```
 
 ---
 
-# Reset Types Covered
-
-| Reset Type | Clock Dependent | Purpose |
-|------------|-----------------|---------|
-| Asynchronous Reset | No | Immediate reset regardless of clock |
-| Synchronous Reset | Yes | Reset only on active clock edge |
-| Global Reset | Yes | Reset multiple modules simultaneously |
-| Domain-Specific Reset | Yes | Independent reset for different clock domains |
-
----
-
-# 1. Asynchronous Reset
+# Experiment 1 – Asynchronous Reset
 
 ## Description
 
-An asynchronous reset immediately clears the flip-flop output whenever the reset signal becomes active, without waiting for a clock edge.
+An asynchronous reset immediately resets the flip-flop output whenever the reset signal is asserted, independent of the clock. It is commonly used for power-on initialization and emergency reset conditions.
 
-### Block Diagram
+## Block Diagram
 
-```
-Images/block_diagram.png
-```
+<p align="center">
+<img src="Asynchronous_Reset/Images/block_diagram.png" width="700">
+</p>
 
-### RTL Design
+## Waveform Output
 
-```
-Source_Code/async_reset_ff.v
-```
+<p align="center">
+<img src="Asynchronous_Reset/Images/waveform.png" width="900">
+</p>
 
-### Testbench
+### Observation
 
-```
-Testbench/async_reset_tb.v
-```
-
-### Simulation Script
-
-```
-Scripts/run.sh
-```
-
-### Output Waveform
-
-```
-Images/waveform.png
-```
-
-### Observations
-
-- Reset is independent of the clock.
-- Output changes immediately after reset assertion.
-- Commonly used for power-on initialization and emergency reset.
+- Reset occurs immediately.
+- Clock is not required.
+- Output returns to zero as soon as reset is asserted.
 
 ---
 
-# 2. Synchronous Reset
+# Experiment 2 – Synchronous Reset
 
 ## Description
 
-A synchronous reset only affects the flip-flop output during the active edge of the clock.
+A synchronous reset updates the flip-flop output only on the active edge of the clock. This reset technique provides predictable timing behavior and is widely used in FPGA and ASIC designs.
 
-### Block Diagram
+## Block Diagram
 
-```
-Images/block_diagram.png
-```
+<p align="center">
+<img src="Synchronous_Reset/Images/block_diagram.png" width="700">
+</p>
 
-### RTL Design
+## Waveform Output
 
-```
-Source_Code/sync_reset_ff.v
-```
+<p align="center">
+<img src="Synchronous_Reset/Images/waveform.png" width="900">
+</p>
 
-### Testbench
+### Observation
 
-```
-Testbench/sync_reset_tb.v
-```
-
-### Simulation Script
-
-```
-Scripts/run.sh
-```
-
-### Output Waveform
-
-```
-Images/waveform.png
-```
-
-### Observations
-
-- Reset occurs only on the rising edge of the clock.
-- Provides predictable timing.
-- Preferred in FPGA and ASIC designs.
+- Reset is sampled only on the rising edge of the clock.
+- Provides synchronous and predictable reset behavior.
 
 ---
 
-# 3. Global Reset
+# Experiment 3 – Global Reset
 
 ## Description
 
-A single reset signal initializes multiple sequential elements simultaneously.
+A global reset uses a single reset signal to initialize multiple sequential elements simultaneously during system startup.
 
-### Block Diagram
+## Block Diagram
 
-```
-Images/block_diagram.png
-```
+<p align="center">
+<img src="Global_Reset/Images/block_diagram.png" width="700">
+</p>
 
-### RTL Design
+## Waveform Output
 
-```
-Source_Code/global_reset.v
-```
+<p align="center">
+<img src="Global_Reset/Images/waveform.png" width="900">
+</p>
 
-### Testbench
+### Observation
 
-```
-Testbench/global_reset_tb.v
-```
-
-### Simulation Script
-
-```
-Scripts/run.sh
-```
-
-### Output Waveform
-
-```
-Images/waveform.png
-```
-
-### Observations
-
-- One reset controls multiple flip-flops.
-- Useful during system startup.
-- Ensures all modules begin in a known state.
+- Multiple registers are reset simultaneously.
+- Suitable for complete system initialization.
 
 ---
 
-# 4. Domain-Specific Reset
+# Experiment 4 – Domain-Specific Reset
 
 ## Description
 
-Each clock domain has an independent reset signal, allowing selective reset of different subsystems.
+Domain-specific reset provides independent reset signals for different clock or functional domains, allowing individual subsystems to be reset without affecting the rest of the design.
 
-### Block Diagram
+## Block Diagram
 
-```
-Images/block_diagram.png
-```
+<p align="center">
+<img src="Domain_Specific_Reset/Images/block_diagram.png" width="700">
+</p>
 
-### RTL Design
+## Waveform Output
 
-```
-Source_Code/domain_reset.v
-```
+<p align="center">
+<img src="Domain_Specific_Reset/Images/waveform.png" width="900">
+</p>
 
-### Testbench
+### Observation
 
-```
-Testbench/domain_reset_tb.v
-```
-
-### Simulation Script
-
-```
-Scripts/run.sh
-```
-
-### Output Waveform
-
-```
-Images/waveform.png
-```
-
-### Observations
-
-- Each reset signal affects only its corresponding clock domain.
+- Each reset controls only its respective clock domain.
 - Enables independent subsystem initialization.
-- Widely used in multi-clock SoC architectures.
+- Commonly used in complex SoC architectures.
+
+---
+
+# Reset Comparison
+
+| Reset Type | Clock Dependent | Scope | Typical Application |
+|------------|-----------------|-------|---------------------|
+| Asynchronous Reset | No | Single Module | External Reset, Power-On Reset |
+| Synchronous Reset | Yes | Single Module | FPGA & ASIC Sequential Logic |
+| Global Reset | Yes | Entire System | System Initialization |
+| Domain-Specific Reset | Yes | Individual Clock Domain | Multi-Clock SoCs |
 
 ---
 
@@ -275,27 +186,28 @@ Images/waveform.png
 
 - FPGA Design
 - ASIC Design
-- SoC Development
+- System-on-Chip (SoC)
 - Reset Domain Crossing (RDC)
 - Clock Domain Crossing (CDC)
-- Embedded Digital Systems
-- Processor Initialization
+- Embedded Systems
+- Digital Signal Processing
+- Multi-Clock Digital Systems
 
 ---
 
 # Learning Outcomes
 
-After completing this lab, you will be able to:
+After completing this experiment, you will be able to:
 
-- Understand different reset methodologies.
-- Differentiate between synchronous and asynchronous reset.
-- Implement global and domain-specific reset circuits.
-- Simulate Verilog RTL using Verilator.
+- Understand the purpose of different reset methodologies.
+- Differentiate between asynchronous and synchronous reset.
+- Implement global reset for system-wide initialization.
+- Design independent reset circuits for multiple clock domains.
+- Simulate reset circuits using Verilator.
 - Analyze reset behavior using GTKWave.
-- Understand reset strategies used in modern digital systems.
 
 ---
 
 # Result
 
-Successfully implemented and verified four different reset techniques using Verilog HDL. Simulation results confirmed the expected behavior of asynchronous reset, synchronous reset, global reset, and domain-specific reset through waveform analysis in GTKWave.
+Successfully implemented and simulated four different reset techniques using Verilog HDL. The generated waveforms verified the behavior of asynchronous, synchronous, global, and domain-specific reset circuits. This experiment demonstrates how different reset strategies are applied in FPGA, ASIC, and SoC designs to achieve reliable system initialization and robust digital operation.
